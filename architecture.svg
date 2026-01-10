@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#f8f9fa"/>
+  
+  <text x="300" y="30" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle" fill="#333">Payment Gateway Architecture</text>
+
+  <rect x="50" y="80" width="150" height="80" rx="10" ry="10" fill="#635bff" stroke="#333" stroke-width="2"/>
+  <text x="125" y="115" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">React Dashboard</text>
+  <text x="125" y="135" font-family="Arial" font-size="12" text-anchor="middle" fill="white">Port: 3000</text>
+
+  <rect x="50" y="220" width="150" height="80" rx="10" ry="10" fill="#0a2540" stroke="#333" stroke-width="2"/>
+  <text x="125" y="255" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">React Checkout</text>
+  <text x="125" y="275" font-family="Arial" font-size="12" text-anchor="middle" fill="white">Port: 3001</text>
+
+  <rect x="300" y="150" width="150" height="80" rx="10" ry="10" fill="#00d924" stroke="#333" stroke-width="2"/>
+  <text x="375" y="185" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="black">Node.js API</text>
+  <text x="375" y="205" font-family="Arial" font-size="12" text-anchor="middle" fill="black">Port: 8000</text>
+
+  <rect x="500" y="150" width="80" height="80" rx="40" ry="40" fill="#f6f9fc" stroke="#333" stroke-width="2"/>
+  <text x="540" y="185" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="black">Postgres</text>
+  <text x="540" y="205" font-family="Arial" font-size="10" text-anchor="middle" fill="black">DB</text>
+
+  <line x1="200" y1="120" x2="300" y2="170" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <line x1="200" y1="260" x2="300" y2="210" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <line x1="450" y1="190" x2="500" y2="190" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    </marker>
+  </defs>
+</svg>
