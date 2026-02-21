@@ -20,10 +20,10 @@ function Login({ setAuth }) {
     <div className="container" style={{ maxWidth: '400px', marginTop: '100px' }}>
       <div className="card">
         <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>Merchant Portal</h2>
-        <form data-test-id="login-form" onSubmit={handleLogin}>
+        <form data-testid="login-form" onSubmit={handleLogin}>
           <div className="input-group">
             <input
-              data-test-id="email-input"
+              data-testid="email-input"
               type="email"
               placeholder="Email address"
               value={email}
@@ -33,12 +33,12 @@ function Login({ setAuth }) {
           </div>
           <div className="input-group">
             <input
-              data-test-id="password-input"
+              data-testid="password-input"
               type="password"
               placeholder="Password"
             />
           </div>
-          <button data-test-id="login-button" type="submit">
+          <button data-testid="login-button" type="submit">
             Sign In
           </button>
         </form>

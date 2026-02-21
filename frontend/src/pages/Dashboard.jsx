@@ -4,10 +4,10 @@ import axios from 'axios';
 
 function Dashboard() {
   const [merchant, setMerchant] = useState(null);
-  const [amount, setAmount] = useState('500'); 
+  const [amount, setAmount] = useState('500');
   const [generatedLink, setGeneratedLink] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   // New state for real-time stats
   const [stats, setStats] = useState({ count: 0, volume: 0, successRate: 0 });
 
@@ -23,13 +23,13 @@ function Dashboard() {
         const paymentsRes = await axios.get('http://localhost:8000/api/v1/payments', {
           headers: {
             'X-Api-Key': merchantRes.data.api_key,
-            'X-Api-Secret': 'secret_test_xyz789'
+            'X-Api-Secret': process.env.REACT_APP_API_SECRET || 'secret_test_xyz789'
           }
         });
 
         const payments = paymentsRes.data;
         const successPayments = payments.filter(p => p.status === 'success');
-        
+
         // Calculate dynamic stats
         setStats({
           count: payments.length,
@@ -37,8 +37,8 @@ function Dashboard() {
           successRate: payments.length ? Math.round((successPayments.length / payments.length) * 100) : 0
         });
 
-      } catch (err) { 
-        console.error("Dashboard Data Error:", err); 
+      } catch (err) {
+        console.error("Dashboard Data Error:", err);
       }
     };
     fetchData();
@@ -48,16 +48,16 @@ function Dashboard() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:8000/api/v1/orders', 
+      const res = await axios.post('http://localhost:8000/api/v1/orders',
         {
-          amount: parseFloat(amount) * 100, 
+          amount: parseFloat(amount) * 100,
           currency: "INR",
           receipt: `receipt_${Date.now()}`
         },
         {
           headers: {
             'X-Api-Key': merchant.api_key,
-            'X-Api-Secret': 'secret_test_xyz789'
+            'X-Api-Secret': process.env.REACT_APP_API_SECRET || 'secret_test_xyz789'
           }
         }
       );
@@ -75,7 +75,7 @@ function Dashboard() {
   if (!merchant) return <div className="container">Loading dashboard...</div>;
 
   return (
-    <div className="container" data-test-id="dashboard">
+    <div className="container" data-testid="dashboard">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
         <h1>Overview</h1>
         <Link to="/dashboard/transactions" style={{ color: '#635bff', textDecoration: 'none', fontWeight: 'bold' }}>
@@ -84,18 +84,18 @@ function Dashboard() {
       </div>
 
       {/* API Credentials Card */}
-      <div className="card" data-test-id="api-credentials">
+      <div className="card" data-testid="api-credentials">
         <h3>API Credentials</h3>
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', color: '#8898aa', fontSize: '12px', marginBottom: '5px' }}>PUBLIC KEY</label>
-          <code data-test-id="api-key" style={{ background: '#f6f9fc', padding: '8px', borderRadius: '4px', fontFamily: 'monospace', display: 'block' }}>
+          <code data-testid="api-key" style={{ background: '#f6f9fc', padding: '8px', borderRadius: '4px', fontFamily: 'monospace', display: 'block' }}>
             {merchant.api_key}
           </code>
         </div>
         <div>
           <label style={{ display: 'block', color: '#8898aa', fontSize: '12px', marginBottom: '5px' }}>SECRET KEY</label>
-          <code data-test-id="api-secret" style={{ background: '#f6f9fc', padding: '8px', borderRadius: '4px', fontFamily: 'monospace', display: 'block' }}>
-            secret_test_xyz789
+          <code data-testid="api-secret" style={{ background: '#f6f9fc', padding: '8px', borderRadius: '4px', fontFamily: 'monospace', display: 'block' }}>
+            {process.env.REACT_APP_API_SECRET || 'secret_test_xyz789'}
           </code>
         </div>
       </div>
@@ -106,14 +106,14 @@ function Dashboard() {
         <p style={{ color: '#525f7f', marginBottom: '20px' }}>
           Create a test payment link instantly to simulate the customer checkout flow.
         </p>
-        
+
         {!generatedLink ? (
           <form onSubmit={createOrder} style={{ display: 'flex', gap: '10px', alignItems: 'flex-end' }}>
             <div style={{ flex: 1 }}>
               <label style={{ display: 'block', marginBottom: '5px', fontWeight: '600' }}>Amount (INR)</label>
-              <input 
-                type="number" 
-                value={amount} 
+              <input
+                type="number"
+                value={amount}
                 onChange={e => setAmount(e.target.value)}
                 style={{ width: '100%', padding: '10px', border: '1px solid #e6ebf1', borderRadius: '6px' }}
               />
@@ -128,15 +128,15 @@ function Dashboard() {
             <div style={{ marginBottom: '15px', wordBreak: 'break-all', fontFamily: 'monospace', color: '#525f7f' }}>
               {generatedLink}
             </div>
-            <a 
-              href={generatedLink} 
-              target="_blank" 
+            <a
+              href={generatedLink}
+              target="_blank"
               rel="noopener noreferrer"
               style={{ display: 'inline-block', background: '#635bff', color: 'white', padding: '12px 24px', textDecoration: 'none', borderRadius: '6px', fontWeight: 'bold' }}
             >
               Pay Now →
             </a>
-            <button 
+            <button
               onClick={() => setGeneratedLink('')}
               style={{ display: 'block', margin: '15px auto 0', background: 'transparent', color: '#525f7f', border: 'none', textDecoration: 'underline' }}
             >
@@ -149,18 +149,18 @@ function Dashboard() {
       {/* Stats Grid - NOW USING REAL DATA */}
       <div className="card">
         <h3>Performance</h3>
-        <div className="stats-grid" data-test-id="stats-container">
+        <div className="stats-grid" data-testid="stats-container">
           <div className="stat-box">
             <div className="label">Total Transactions</div>
-            <div className="stat-value" data-test-id="total-transactions">{stats.count}</div>
+            <div className="stat-value" data-testid="total-transactions">{stats.count}</div>
           </div>
           <div className="stat-box">
             <div className="label">Total Volume</div>
-            <div className="stat-value" data-test-id="total-amount">₹{(stats.volume / 100).toFixed(2)}</div>
+            <div className="stat-value" data-testid="total-amount">₹{(stats.volume / 100).toFixed(2)}</div>
           </div>
           <div className="stat-box">
             <div className="label">Success Rate</div>
-            <div className="stat-value" data-test-id="success-rate">{stats.successRate}%</div>
+            <div className="stat-value" data-testid="success-rate">{stats.successRate}%</div>
           </div>
         </div>
       </div>

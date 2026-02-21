@@ -43,16 +43,36 @@ router.post('/', authenticate, async (req, res) => {
 });
 
 // GET ORDER
-router.get('/:id', async (req, res) => {
-    // Note: Checkout page might need public access, but usually this is authenticated.
-    // The instructions say use auth headers[cite: 40].
-    
-    // For simplicity, we check if headers exist, if not, we might allow public access
-    // if you implemented the "Public Endpoint" logic mentioned in source [66].
-    // For now, let's assume standard auth is passed or we skip it for simplicity if needed.
-    
+router.get('/:id', authenticate, async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM orders WHERE id = $1', [req.params.id]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                error: { code: 'NOT_FOUND_ERROR', description: 'Order not found' }
+            });
+        }
+
+        const order = result.rows[0];
+
+        // Authorization validation: Check if this order belongs to the requester
+        if (order.merchant_id !== req.merchant.id) {
+            return res.status(404).json({
+                error: { code: 'NOT_FOUND_ERROR', description: 'Order not found' } // Use 404 to avoid leaking existence
+            });
+        }
+
+        res.json(order);
+    } catch (err) {
+        res.status(500).json({ error: 'Database error' });
+    }
+});
+
+// PUBLIC GET ORDER (For Checkout Page)
+router.get('/:id/public', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT id, amount, currency, status FROM orders WHERE id = $1', [req.params.id]);
+
         if (result.rows.length === 0) {
             return res.status(404).json({
                 error: { code: 'NOT_FOUND_ERROR', description: 'Order not found' }

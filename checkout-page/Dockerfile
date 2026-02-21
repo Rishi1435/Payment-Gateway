@@ -1,9 +1,23 @@
-FROM node:18-alpine
+# Build Stage
+FROM node:18-alpine AS builder
 WORKDIR /app
-COPY package.json .
+COPY package*.json ./
 RUN npm install
 COPY . .
-EXPOSE 3001
-# We use a trick to run on port 3001 because Create-React-App defaults to 3000
-ENV PORT=3001
-CMD ["npm", "start"]
+RUN npm run build
+
+# Production Stage
+FROM nginx:alpine
+# Copy built files
+COPY --from=builder /app/build /usr/share/nginx/html
+# Update Nginx config to handle React Router 
+RUN echo 'server { \
+    listen 80; \
+    location / { \
+    root /usr/share/nginx/html; \
+    index index.html index.htm; \
+    try_files $uri $uri/ /index.html; \
+    } \
+    }' > /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
