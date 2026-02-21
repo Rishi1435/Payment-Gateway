@@ -34,9 +34,37 @@ app.get('/api/v1/test/merchant', async (req, res) => {
         const m = result.rows[0];
         res.json({ id: m.id, email: m.email, api_key: m.api_key, seeded: true });
     } else {
-        res.status(404).json({ error: "Merchant not found" });
+        res.status(404).json({ error: { code: 'NOT_FOUND_ERROR', description: 'Merchant not found' } });
     }
 });
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => console.log(`API running on port ${PORT}`));
+
+// Seed Test Merchant on Startup
+const seedTestMerchant = async () => {
+    try {
+        const result = await pool.query("SELECT * FROM merchants WHERE email = 'test@example.com'");
+        if (result.rows.length === 0) {
+            await pool.query(
+                `INSERT INTO merchants (id, name, email, api_key, api_secret, callback_url) 
+                 VALUES ($1, $2, $3, $4, $5, $6)`,
+                [
+                    '550e8400-e29b-41d4-a716-446655440000',
+                    'Test Merchant',
+                    'test@example.com',
+                    'test_key_123',
+                    'test_secret_456',
+                    'http://localhost:3000/callback'
+                ]
+            );
+            console.log('Test merchant seeded with specific UUID');
+        }
+    } catch (err) {
+        console.error('Failed to seed test merchant:', err);
+    }
+};
+
+app.listen(PORT, async () => {
+    await seedTestMerchant();
+    console.log(`API running on port ${PORT}`);
+});

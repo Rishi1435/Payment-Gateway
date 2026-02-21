@@ -29,7 +29,7 @@ function Checkout() {
           setOrder({ id: res.data.id, amount: res.data.amount });
         } catch (err) {
           console.error("Failed to load order:", err);
-          setOrder({ id: orderId, amount: 50000 }); // Retaining fallback just in case
+          setProcessingMsg("Failed to load order details. Invalid Order ID.");
         }
       }
     };

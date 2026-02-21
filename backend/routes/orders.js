@@ -38,7 +38,7 @@ router.post('/', authenticate, async (req, res) => {
         res.status(201).json(result.rows[0]);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Database error' });
+        res.status(500).json({ error: { code: 'SERVER_ERROR', description: 'Database error' } });
     }
 });
 
@@ -64,7 +64,7 @@ router.get('/:id', authenticate, async (req, res) => {
 
         res.json(order);
     } catch (err) {
-        res.status(500).json({ error: 'Database error' });
+        res.status(500).json({ error: { code: 'SERVER_ERROR', description: 'Database error' } });
     }
 });
 
@@ -80,7 +80,7 @@ router.get('/:id/public', async (req, res) => {
         }
         res.json(result.rows[0]);
     } catch (err) {
-        res.status(500).json({ error: 'Database error' });
+        res.status(500).json({ error: { code: 'SERVER_ERROR', description: 'Database error' } });
     }
 });
 

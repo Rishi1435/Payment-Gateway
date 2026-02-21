@@ -239,7 +239,10 @@ router.post('/', authenticate, async (req, res) => {
             }
         }
 
-        const generatedPaymentId = `pay_${Math.random().toString(36).substring(2, 18)}`;
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let randomStr = '';
+        for (let i = 0; i < 16; i++) randomStr += chars.charAt(Math.floor(Math.random() * chars.length));
+        const generatedPaymentId = `pay_${randomStr}`;
 
         // Step 1: Insert Payment as "processing"
         const insertResult = await pool.query(

@@ -29,7 +29,7 @@ const authenticate = async (req, res, next) => {
         next();
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: { code: 'SERVER_ERROR', description: 'Internal Server Error' } });
     }
 };
 
