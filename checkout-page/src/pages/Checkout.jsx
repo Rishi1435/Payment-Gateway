@@ -147,8 +147,8 @@ function Checkout() {
       const paymentId = res.data.id;
 
       // 2. Poll for Status (using env variables or fallback for frontend test purposes, as the assignment didn't specify a public GET status endpoint)
-      const apiKey = process.env.REACT_APP_API_KEY || 'key_test_abc123';
-      const apiSecret = process.env.REACT_APP_API_SECRET || 'secret_test_xyz789';
+      const apiKey = process.env.REACT_APP_API_KEY;
+      const apiSecret = process.env.REACT_APP_API_SECRET;
 
       const interval = setInterval(async () => {
         try {

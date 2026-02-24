@@ -8,8 +8,8 @@ function Transactions() {
   useEffect(() => {
     axios.get('http://localhost:8000/api/v1/payments', {
       headers: {
-        'X-Api-Key': process.env.REACT_APP_API_KEY || 'key_test_abc123',
-        'X-Api-Secret': process.env.REACT_APP_API_SECRET || 'secret_test_xyz789'
+        'X-Api-Key': process.env.REACT_APP_API_KEY,
+        'X-Api-Secret': process.env.REACT_APP_API_SECRET
       }
     })
       .then(res => setTransactions(res.data))

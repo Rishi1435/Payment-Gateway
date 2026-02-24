@@ -23,7 +23,7 @@ function Dashboard() {
         const paymentsRes = await axios.get('http://localhost:8000/api/v1/payments', {
           headers: {
             'X-Api-Key': merchantRes.data.api_key,
-            'X-Api-Secret': process.env.REACT_APP_API_SECRET || 'secret_test_xyz789'
+            'X-Api-Secret': process.env.REACT_APP_API_SECRET
           }
         });
 
@@ -57,7 +57,7 @@ function Dashboard() {
         {
           headers: {
             'X-Api-Key': merchant.api_key,
-            'X-Api-Secret': process.env.REACT_APP_API_SECRET || 'secret_test_xyz789'
+            'X-Api-Secret': process.env.REACT_APP_API_SECRET
           }
         }
       );
@@ -95,7 +95,7 @@ function Dashboard() {
         <div>
           <label style={{ display: 'block', color: '#8898aa', fontSize: '12px', marginBottom: '5px' }}>SECRET KEY</label>
           <code data-testid="api-secret" style={{ background: '#f6f9fc', padding: '8px', borderRadius: '4px', fontFamily: 'monospace', display: 'block' }}>
-            {process.env.REACT_APP_API_SECRET || 'secret_test_xyz789'}
+            {process.env.REACT_APP_API_SECRET}
           </code>
         </div>
       </div>
